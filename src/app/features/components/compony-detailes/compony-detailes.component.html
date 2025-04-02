@@ -1,15 +1,15 @@
-<div class="bg-white rounded-lg shadow-md overflow-hidden max-w-4xl mx-auto">
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white rounded-lg shadow-md overflow-hidden max-w-6xl w-full mx-auto">
     <!-- Header -->
     <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between">
       <div class="flex items-center gap-4 mb-4 sm:mb-0">
-        <img 
+        <!-- <img 
           [src]="company.logo" 
           [alt]="company.name + ' logo'" 
           class="h-16 w-16 rounded-full object-cover border-2 border-white"
-        />
+        /> -->
         <div class="text-white">
           <h1 class="text-xl sm:text-2xl font-bold">{{ company.name }}</h1>
-          <p class="text-blue-100">{{ company.shortName }}</p>
         </div>
       </div>
       <button 
@@ -87,3 +87,4 @@
       </div>
     </div>
   </div>
+</div>

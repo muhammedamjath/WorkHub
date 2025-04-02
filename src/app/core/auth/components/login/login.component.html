@@ -1,15 +1,15 @@
 <div class="w-screen h-screen flex items-center justify-center bg-gray-100">
     <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
-        <div class="w-full border border-gray-300 rounded-md p-5 flex flex-col gap-4">
+        <div class="w-full border border-yellow-300 rounded-md p-5 flex flex-col gap-4">
             <p class="font-medium text-2xl text-center">Log in</p>
-            <form class="flex flex-col gap-4">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"  class="flex flex-col gap-4">
                 <label for="username" class="font-medium">Username:</label>
-                <input id="username" class="h-10 border border-gray-300 rounded-md px-3 outline-none focus:bg-gray-100" type="text" formControlName="username">
+                <input id="username" class="h-10 border border-yellow-400 rounded-md px-3 outline-none focus:bg-gray-100" type="text" formControlName="username">
                 
                 <label for="password" class="font-medium">Password:</label>
-                <input id="password" class="h-10 border border-gray-300 rounded-md px-3 outline-none focus:bg-gray-100" type="password" formControlName="password">
+                <input id="password" class="h-10 border border-yellow-400 rounded-md px-3 outline-none focus:bg-gray-100" type="password" formControlName="password">
                 
-                <button class="w-full bg-black text-white font-medium py-2 rounded-md mt-3 hover:bg-gray-800 transition cursor-pointer">
+                <button class="w-full bg-yellow-500 text-white font-medium py-2 rounded-md mt-3 hover:bg-yellow-600 transition cursor-pointer">
                     Login
                 </button>
             </form>
