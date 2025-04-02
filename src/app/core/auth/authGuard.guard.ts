@@ -1,16 +1,19 @@
+import { Location } from '@angular/common';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
-export const featuresGuard: CanActivateFn = (route, state) => {
+export const AuthGuard: CanActivateFn = (route, state) => {
   const router= inject(Router);
+  const location = inject(Location)
   
   const token = localStorage.getItem('token');
 
-  if(token){
+  if(!token){
     return true;
   }
   else{
-    router.navigate(['/login']);
+    // router.navigate(['/login']);
+    // location.back()
     return false;
   }
 };

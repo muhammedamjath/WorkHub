@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../core/auth/authService.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,9 +14,14 @@ import { RouterModule } from '@angular/router';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
+  constructor(private AuthService:AuthService){}
   collapsed = false;
 
   toggleSidebar(): void {
     this.collapsed = !this.collapsed;
+  }
+
+  logout(){
+    this.AuthService.logout()
   }
 }

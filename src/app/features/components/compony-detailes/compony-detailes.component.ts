@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FeatureService } from '../../featureService.service';
 
 interface Company {
   name: string;
@@ -14,6 +15,7 @@ interface Company {
   phoneNo1: string;
   phoneNo2?: string; 
   currency: string;
+  currencyId: number,
   logo: string;
 }
 
@@ -26,25 +28,61 @@ interface Company {
   templateUrl: './compony-detailes.component.html',
   styleUrl: './compony-detailes.component.css'
 })
-export class ComponyDetailesComponent {
+export class ComponyDetailesComponent implements OnInit {
 
-  constructor(private router:Router){}
+  constructor(private router:Router , private featureService:FeatureService){}
   company:Company = {
-    name: 'Teako Interiors',
-    shortName: 'Teako',
-    vatNo: 'VAT123456',
-    crNo: 'CR987654',
-    addressLine1: '123 Green Street',
-    addressLine2: 'Suite 456',
-    zipCode: '560001',
-    emailId: 'contact@teakointeriors.com',
-    phoneNo1: '+1234567890',
-    phoneNo2: '+0987654321',
-    currency: 'USD',
-    logo: 'https://via.placeholder.com/80', 
+    name: '',
+    shortName: '',
+    vatNo: '',
+    crNo: '',
+    addressLine1: '',
+    addressLine2: '',
+    zipCode: '',
+    emailId: '',
+    phoneNo1: '',
+    phoneNo2: '',
+    logo: '',
+    currencyId: 0,
+    currency: ''
   };
+ ngOnInit(): void {
+   const companyId = localStorage.getItem('companyId')
+   console.log('this is id',companyId);
+   
+   this.featureService.companyDetails(companyId).subscribe({
+    next:(res)=>{
+      this.company = res.data
 
+      const data = {
+        "searchKeyword": "",
+        "pageIndex": 0,
+        "pageSize": 0
+      };
+      
+      this.featureService.GetAllCurrency(data).subscribe(
+        (response)=>{
+          if (response?.data?.result) {
+            const matchedCurrency = response.data.result.find(
+              (currency: any) => currency.id === this.company.currencyId
+            );
+    
+            if (matchedCurrency) {
+              this.company.currency = matchedCurrency.name;
+            }
+          }
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    },error:(err)=>{
+      console.log('this is from compny err:',err);
+      
+    }
+   })
+ }
   onUpdate() {
-    console.log('Update company clicked');
+    this.router.navigate(['/user/updateCompony'])
   }
 }

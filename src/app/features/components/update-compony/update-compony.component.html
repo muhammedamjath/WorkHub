@@ -1,0 +1,171 @@
+<div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Update Company Details</h1>
+    
+    <div *ngIf="successMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+      {{ successMessage }}
+    </div>
+    
+    <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      {{ errorMessage }}
+    </div>
+    
+    <!-- Company Logo Section -->
+    <div class="flex flex-col items-center mb-6 space-y-4">
+        <h2 class="text-lg font-semibold text-gray-700">Company Logo</h2>
+    
+        <!-- Logo Preview -->
+        <div class="relative w-32 h-32 border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+            <img *ngIf="companyLogo" [src]="companyLogo" alt="Company Logo" 
+                class="w-full h-full object-cover">
+    
+            <div *ngIf="!companyLogo" class="flex items-center justify-center w-full h-full bg-gray-100">
+                <span class="text-gray-400 text-sm">No Logo</span>
+            </div>
+        </div>
+    
+        <!-- Upload & Delete Buttons -->
+        <div class="flex space-x-3">
+            <!-- Upload Button -->
+            <input type="file" id="logoUpload" (change)="onLogoUpload($event)" class="hidden">
+            <label for="logoUpload" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg shadow 
+                hover:bg-blue-700 focus:ring focus:ring-blue-300 cursor-pointer transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" 
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 12l8-8m0 0l8 8m-8-8v16"></path>
+                </svg>
+                Upload Logo
+            </label>
+    
+            <!-- Delete Button -->
+            <button (click)="deleteLogo()" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg shadow 
+                hover:bg-red-600 focus:ring focus:ring-red-300 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" 
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                Delete
+            </button>
+        </div>
+    </div>
+    
+
+    <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Company Name -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+              Company Name *
+            </label>
+            <input 
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+              id="name" 
+              type="text" 
+              formControlName="name"
+              [ngClass]="{'border-red-500': isFieldInvalid('name')}"
+            >
+            <p *ngIf="isFieldInvalid('name')" class="text-red-500 text-xs italic">Company name is required</p>
+          </div>
+      
+          <!-- Short Name -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="shortName">
+              Short Name
+            </label>
+            <input formControlName="shortName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="shortName" type="text">
+          </div>
+      
+          <!-- Contact Person Name -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="contactPersonName">
+              Contact Person Name
+            </label>
+            <input formControlName="contactPersonName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="contactPersonName" type="text">
+          </div>
+      
+          <!-- Address Line 1 -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="addressLine1">
+              Address Line 1
+            </label>
+            <input formControlName="addressLine1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="addressLine1" type="text">
+          </div>
+      
+          <!-- Address Line 2 -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="addressLine2">
+              Address Line 2
+            </label>
+            <input formControlName="addressLine2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="addressLine2" type="text">
+          </div>
+      
+          <!-- Zip Code -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="zipCode">
+              Zip Code
+            </label>
+            <input formControlName="zipCode" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="zipCode" type="text">
+          </div>
+      
+          <!-- Email -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="emailId">
+              Email
+            </label>
+            <input formControlName="emailId" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="emailId" type="email">
+          </div>
+      
+          <!-- Phone Number 1 -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="phoneNo1">
+              Phone Number 1
+            </label>
+            <input formControlName="phoneNo1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="phoneNo1" type="tel">
+          </div>
+      
+          <!-- Phone Number 2 -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="phoneNo2">
+              Phone Number 2
+            </label>
+            <input formControlName="phoneNo2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="phoneNo2" type="tel">
+          </div>
+      
+          <!-- VAT Number -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="vatNo">
+              VAT Number
+            </label>
+            <input formControlName="vatNo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vatNo" type="text">
+          </div>
+      
+          <!-- CR Number -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="crNo">
+              CR Number
+            </label>
+            <input formControlName="crNo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="crNo" type="text">
+          </div>
+      
+          <!-- Currency Selection -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="currencyId">
+              Currency
+            </label>
+            <select formControlName="currencyId" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="currencyId">
+              <option *ngIf="selectedCurrency" value="{{selectedCurrency.id}}" disabled selected>{{selectedCurrency.symbol}} {{selectedCurrency.name}}</option>
+              <option *ngIf="!selectedCurrency" selected value="">Select one</option>
+              <option *ngFor="let currency of allCurrency" value="{{currency.id}}">{{currency.symbol}} {{currency.name}}</option>
+            </select>
+          </div>
+        </div>
+      
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+          <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <i class="fas fa-check mr-2"></i> Update Details
+          </button>
+          <p *ngIf="errorMessage" class="text-center relative top-3 mb-2 text-red-600">{{errorMessage}}</p>
+        </div>
+      </form>
+      
+  </div>
