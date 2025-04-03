@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FeatureService } from '../../featureService.service';
+import { environment } from '../../../../environment/environment';
 
 interface Company {
   name: string;
@@ -31,6 +32,7 @@ interface Company {
 export class ComponyDetailesComponent implements OnInit {
 
   constructor(private router:Router , private featureService:FeatureService){}
+  logo:string |null = null
   company:Company = {
     name: '',
     shortName: '',
@@ -48,12 +50,14 @@ export class ComponyDetailesComponent implements OnInit {
   };
  ngOnInit(): void {
    const companyId = localStorage.getItem('companyId')
-   console.log('this is id',companyId);
    
    this.featureService.companyDetails(companyId).subscribe({
     next:(res)=>{
       this.company = res.data
-
+      const photoName = this.company.logo;
+      const token = localStorage.getItem('token')
+      this.logo = `${environment.baseUrl}/Company/GetCompanyLogo?photoName=${photoName}&token=${token}`;
+      
       const data = {
         "searchKeyword": "",
         "pageIndex": 0,

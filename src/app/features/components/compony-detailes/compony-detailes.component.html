@@ -3,10 +3,13 @@
     <!-- Header -->
     <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between">
       <div class="flex items-center gap-4 mb-4 sm:mb-0">
+        <img [src]="logo" alt="Company Logo" class="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-full border-2 border-white shadow-md" *ngIf="company.logo">
+        
         <div class="text-white">
           <h1 class="text-xl sm:text-2xl font-bold">{{ company.name }}</h1>
         </div>
       </div>
+    
       <button 
         (click)="onUpdate()"
         class="bg-white text-blue-700 px-4 py-2 rounded-md hover:bg-blue-50 cursor-pointer transition-colors font-medium flex items-center gap-2"
@@ -18,12 +21,13 @@
       </button>
     </div>
     
+    
     <!-- Company Details -->
     <div class="p-4 sm:p-6 h-full overflow-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Left Column -->
         <div class="space-y-4">
-          <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="bg-gray-200 p-4 rounded-lg">
             <h2 class="text-gray-600 text-sm font-medium mb-2">Registration Details</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -37,7 +41,7 @@
             </div>
           </div>
           
-          <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="bg-gray-200 p-4 rounded-lg">
             <h2 class="text-gray-600 text-sm font-medium mb-2">Address</h2>
             <p class="mb-1">{{ company.addressLine1 }}</p>
             <p *ngIf="company.addressLine2" class="mb-1">{{ company.addressLine2 }}</p>
@@ -47,7 +51,7 @@
         
         <!-- Right Column -->
         <div class="space-y-4">
-          <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="bg-gray-200 p-4 rounded-lg">
             <h2 class="text-gray-600 text-sm font-medium mb-2">Contact Information</h2>
             <div class="space-y-2">
               <div class="flex items-start gap-2">
@@ -71,7 +75,7 @@
             </div>
           </div>
           
-          <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="bg-gray-200 p-4 rounded-lg">
             <h2 class="text-gray-600 text-sm font-medium mb-2">Additional Information</h2>
             <div>
               <p class="text-sm text-gray-500">Currency</p>

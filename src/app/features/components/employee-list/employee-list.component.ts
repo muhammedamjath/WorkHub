@@ -29,35 +29,33 @@ interface Employee {
   departmentId: string;
 }
 
-
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [CommonModule, FormsModule , RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './employee-list.component.html',
-  styleUrl: './employee-list.component.css'
+  styleUrl: './employee-list.component.css',
 })
 export class EmployeeListComponent implements OnInit {
-  constructor (
-    private featurservice : FeatureService,
-    private authService : AuthService,
-    private route : Router
-  ){}
+  constructor(
+    private featurservice: FeatureService,
+    private authService: AuthService,
+    private route: Router
+  ) {}
 
-  openDropdownId : string | null = null;
-  pageSize : number = 10;
-  pageIndex : number = 0;
-  searchKeyword : string = '';
-  employees! : [Employee];
-  baseUrl : string = '';
-  api : string = '/Employee/GetEmployeeProfilePhoto';
-  token : string = '';
-  employeesCount : number = 0;
+  openDropdownId: string | null = null;
+  pageSize: number = 10;
+  pageIndex: number = 0;
+  searchKeyword: string = '';
+  employees!: [Employee];
+  baseUrl: string = '';
+  api: string = '/Employee/GetEmployeeProfilePhoto';
+  token: string |null = null;
+  employeesCount: number = 0;
 
   ngOnInit(): void {
     this.baseUrl = environment.baseUrl;
-    
-
+    this.token = localStorage.getItem('token')
     this.loadEmployees();
   }
 
@@ -65,9 +63,9 @@ export class EmployeeListComponent implements OnInit {
     const data = {
       pageSize: this.pageSize,
       pageIndex: this.pageIndex,
-      searchKeyword: this.searchKeyword
+      searchKeyword: this.searchKeyword,
     };
-  
+
     this.featurservice.getAllEmployees(data).subscribe(
       (response) => {
         this.employees = response.data.result;
@@ -78,12 +76,9 @@ export class EmployeeListComponent implements OnInit {
       }
     );
   }
-  
 
   getProfileImage(profilePhotoName: string): any {
-    
-    return  `${environment.baseUrl}/Employee/GetEmployeeProfilePhoto?photoName=${profilePhotoName}&token=${this.token}`;
-    
+    return `${environment.baseUrl}/Employee/GetEmployeeProfilePhoto?photoName=${profilePhotoName}&token=${this.token}`;
   }
   getPages(): number[] {
     const totalPages = Math.ceil(this.employeesCount / this.pageSize);
@@ -114,19 +109,20 @@ export class EmployeeListComponent implements OnInit {
     this.loadEmployees();
   }
 
-  letter (name : string){
+  letter(name: string) {
     return name?.charAt(0);
   }
 
-  toggleDropdown(employeeId : string) {
-    this.openDropdownId = this.openDropdownId === employeeId ? null : employeeId;
+  toggleDropdown(employeeId: string) {
+    this.openDropdownId =
+      this.openDropdownId === employeeId ? null : employeeId;
   }
 
-  updateEmployee(id: string){
-    this.route.navigate(['/user/updateemployee/',id]);
+  updateEmployee(id: string) {
+    this.route.navigate(['/user/updateemployee/', id]);
   }
 
-  add(){
-    this.route.navigate(['/user/addemployeee'])
+  add() {
+    this.route.navigate(['/user/addemployeee']);
   }
 }
