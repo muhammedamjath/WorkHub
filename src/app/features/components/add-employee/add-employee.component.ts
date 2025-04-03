@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FeatureService } from '../../featureService.service';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-employee',
@@ -15,7 +18,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class AddEmployeeComponent implements OnInit{
   employeeForm!: FormGroup;
   
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder , private featureService:FeatureService , private router:Router) {}
   
   ngOnInit() {
     this.initForm();
@@ -23,22 +26,21 @@ export class AddEmployeeComponent implements OnInit{
   
   initForm() {
     this.employeeForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      middleName: [''],
-      birthDate: ['', [Validators.required]],
-      gender: ['', [Validators.required]],
-      parmenantAddress: ['', [Validators.required]],
-      currentAddress: ['', [Validators.required]],
-      isCurrentSameAsParmenantAddress: [true],
-      personalEmailId: ['', [Validators.required, Validators.email]],
-      personalMobileNo: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      otherContactNo: [''],
-      employeeCode: ['', [Validators.required]],
-      joiningOn: ['', [Validators.required]]
+      firstName:['',[Validators.required]],
+      middleName:['',[Validators.required]],
+      lastName:['',[Validators.required]],
+      birthDate:['',[Validators.required]],
+      gender:[null,[Validators.required]],
+      parmenantAddress:['',[Validators.required]],
+      currentAddress:['',[Validators.required]],
+      isCurrentSameAsParmenantAddress:[false,[Validators.required]],
+      personalEmailId:['',[Validators.required,Validators.email]],
+      personalMobileNo:['',[Validators.required,Validators.pattern(/^\d{10}$/)]],
+      otherContactNo:['',[Validators.required,Validators.pattern(/^\d{10}$/)]],
+      employeeCode:['',[Validators.required]],
+      joiningOn:[new Date().toISOString(),[Validators.required]]
     });
     
-    // Set initial state of current address validation based on checkbox
     this.onSameAddressChange();
   }
   
@@ -61,26 +63,40 @@ export class AddEmployeeComponent implements OnInit{
   
   onSubmit() {
     if (this.employeeForm.invalid) {
-      // Mark all fields as touched to trigger validation messages
       Object.keys(this.employeeForm.controls).forEach(key => {
         const control = this.employeeForm.get(key);
         control?.markAsTouched();
       });
       return;
     }
-    
-    // Handle the same address logic before submitting
+
     if (this.employeeForm.get('isCurrentSameAsParmenantAddress')?.value) {
       this.employeeForm.get('currentAddress')?.setValue(
         this.employeeForm.get('parmenantAddress')?.value
       );
     }
-    
-    // Form is valid, get values and submit
+
     const formData = this.employeeForm.getRawValue();
-    console.log('Form submitted with data:', formData);
-    
-    // Here you would call your service to submit the data
-    // this.employeeService.createEmployee(formData).subscribe(...);
+
+    this.featureService.createEmployee(formData).subscribe({
+      next: (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Employee Added!',
+          text: 'The employee has been successfully created.',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/user/getallemployees']); 
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Failed to create employee. Please try again.',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
   }
 }

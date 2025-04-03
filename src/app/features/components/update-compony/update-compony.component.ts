@@ -9,6 +9,8 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FeatureService } from '../../featureService.service';
 import { environment } from '../../../../environment/environment';
+import Swal from 'sweetalert2';
+
 
 interface Company {
   id: string;
@@ -160,18 +162,57 @@ export class UpdateComponyComponent implements OnInit {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.companyLogo = e.target.result; 
+        this.companyLogo = e.target.result;
         console.log(this.companyLogo);
-        
       };
       reader.readAsDataURL(file);
-      
+    
+      const formData = new FormData();
+      formData.append('Photo', file);
+      this.companyId = localStorage.getItem('companyId')
+      if (this.companyId) {
+        formData.append('Id', this.companyId);
+      }
+  
+      this.featureService.updateComponyLogo(formData).subscribe(
+        (response) => {
+          console.log('Logo uploaded successfully', response);
+        },
+        (error) => {
+          console.error('Error uploading logo', error);
+        }
+      );
     }
   }
+  
+  
 
   deleteLogo() {
-    
-    this.companyLogo = ''; 
+    this.companyId = localStorage.getItem('companyId')    
+    if (this.companyId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you really want to delete the logo?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.featureService.removeComponyLogo(this.companyId).subscribe({
+            next: (res) => {
+              this.loadComponyDetailes()
+              this.companyLogo = '';
+              Swal.fire('Deleted!', 'The logo has been deleted.', 'success');
+            },
+            error: (err) => {
+              Swal.fire('Error!', 'Failed to delete the logo.', 'error');
+            },
+          });
+        }
+      });
+    }
   }
 
   isFieldInvalid(fieldName: string): boolean {

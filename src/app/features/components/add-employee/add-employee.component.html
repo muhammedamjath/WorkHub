@@ -23,7 +23,7 @@
           
           <!-- Middle Name -->
           <div class="space-y-2">
-            <label for="middleName" class="block text-sm font-medium text-gray-700">Middle Name</label>
+            <label for="middleName" class="block text-sm font-medium text-gray-700">Middle Name  *</label>
             <input 
               type="text" 
               id="middleName" 
@@ -70,7 +70,7 @@
                 <input 
                   type="radio" 
                   id="male" 
-                  value="0" 
+                  [value]="1" 
                   formControlName="gender"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500"
                 >
@@ -80,7 +80,7 @@
                 <input 
                   type="radio" 
                   id="female" 
-                  value="1" 
+                  [value]="0" 
                   formControlName="gender"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500"
                 >
@@ -190,7 +190,7 @@
           
           <!-- Other Contact -->
           <div class="space-y-2">
-            <label for="otherContactNo" class="block text-sm font-medium text-gray-700">Alternative Number</label>
+            <label for="otherContactNo" class="block text-sm font-medium text-gray-700">Alternative Number *</label>
             <input 
               type="tel" 
               id="otherContactNo" 
@@ -221,20 +221,6 @@
             </div>
           </div>
           
-          <!-- Joining Date -->
-          <div class="space-y-2">
-            <label for="joiningOn" class="block text-sm font-medium text-gray-700">Joining Date *</label>
-            <input 
-              type="date" 
-              id="joiningOn" 
-              formControlName="joiningOn"
-              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-              [ngClass]="{'border-red-500': isInvalid('joiningOn'), 'border-gray-300': !isInvalid('joiningOn')}"
-            >
-            <div *ngIf="isInvalid('joiningOn')" class="text-red-500 text-xs mt-1">
-              Joining date is required
-            </div>
-          </div>
         </div>
       </div>
       

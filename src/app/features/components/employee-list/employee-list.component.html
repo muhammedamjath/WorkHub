@@ -1,0 +1,83 @@
+<div class="p-4">  
+  <!-- Heading  -->  
+  <div class="flex items-center justify-between mb-4">  
+    <h1 class="text-xl font-semibold">Employee List</h1>
+    <p class="text-m font-semibold">Total Employees : {{employeesCount}}</p>
+    <div class="flex gap-2">  
+      <input [(ngModel)]="searchKeyword" (input)="searchEmployees()" type="text" placeholder="Search..." class="border rounded px-3 py-1" />  
+      <button class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600" (click)="add()">Add Employee</button>  
+    </div>  
+  </div>  
+  
+  <!-- Employee Table -->  
+  <div class="overflow-x-auto">  
+    <table class="min-w-full border border-gray-200">  
+      <thead>  
+        <tr class="bg-gray-100 border-b">  
+          <th class="px-4 py-2 text-left">#</th>  
+          <th class="px-4 py-2 text-left">Image</th>  
+          <th class="px-4 py-2 text-left">Name</th>  
+          <th class="px-4 py-2 text-left">Position</th>  
+          <th class="px-4 py-2 text-left">Status</th>  
+          <th class="px-4 py-2 text-left">Actions</th>  
+        </tr>  
+      </thead>  
+      <tbody>  
+        <tr class="border-b" *ngFor="let employee of employees; let i = index">  
+          <td class="px-4 py-2">{{(i + 1) + (pageIndex*10) }}</td>  
+          <td class="px-4 py-2">  
+            <img *ngIf="employee.profilePhotoName; else placeholder" [src]="getProfileImage(employee.profilePhotoName)" alt="Employee Image" class="w-10 h-10 rounded-full" />  
+            <ng-template #placeholder>  
+              <div class="w-10 h-10 rounded-full flex items-center justify-center uppercase text-gray-600 font-bold border border-gray-300">  
+                {{ letter(employee.fullName) }}  
+              </div>  
+            </ng-template> 
+          </td>  
+          <td class="px-4 py-2">{{ employee.fullName }}</td>  
+          <td class="px-4 py-2">{{ employee.designationName }}</td>  
+          <td class="px-4 py-2">  
+            <span [ngClass]="{'text-green-600': !employee.relievingOn, 'text-red-600': employee.relievingOn}">  
+              {{ employee.relievingOn ? 'Inactive' : 'Active' }}  
+            </span>  
+          </td>  
+          <td class="px-4 py-2">  
+            <button (click)="updateEmployee(employee.id)" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 mr-2">Edit</button>  
+            <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</button>  
+          </td>  
+        </tr>  
+      </tbody>  
+    </table>  
+  </div>  
+  
+  <!-- Pagination -->  
+<div class="flex justify-center mt-4 space-x-2">
+  <button 
+    (click)="previousPage()" 
+    [disabled]="pageIndex === 0" 
+    class="px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    Prev
+  </button>
+
+  <button 
+    *ngFor="let page of getPages(); let i = index" 
+    (click)="goToPage(i)"
+    class="px-4 py-2 rounded-full border transition-all duration-200"
+    [ngClass]="{
+      'bg-blue-500 text-white border-blue-500': pageIndex === i,
+      'bg-white text-gray-700 border-gray-300 hover:bg-gray-100': pageIndex !== i
+    }"
+  >
+    {{ i + 1 }}
+  </button>
+
+  <button 
+    (click)="nextPage()" 
+    [disabled]="(pageIndex + 1) * pageSize >= employeesCount" 
+    class="px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    Next
+  </button>
+</div>
+  
+</div>
